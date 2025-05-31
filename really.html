@@ -1,0 +1,1011 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="SmartClient - بهترین کلاینت ماینکرافت با قابلیت‌های پیشرفته و FPS بالا">
+  <meta name="keywords" content="ماینکرافت, کلاینت, 1.8.9, سرور, PvP">
+  <title>SmartClient | کلاینت حرفه‌ای ماینکرافت</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@100;200;300;400;500;600;700;800;900&display=swap');
+    :root {
+      --primary: #00a86b;
+      --primary-dark: #008c5a;
+      --secondary: #1e3a1e;
+      --text: #ffffff;
+      --text-secondary: #e0e0e0;
+      --bg: #0d210d;
+      --card-bg: rgba(30, 58, 30, 0.8);
+      --error: #ff4444;
+      --success: #00C851;
+    }
+    
+    * { 
+      margin: 0; 
+      padding: 0; 
+      box-sizing: border-box; 
+      font-family: 'Vazirmatn', sans-serif; 
+    }
+    
+    html, body { 
+      height: 100%; 
+      overflow-x: hidden; 
+      background: var(--bg); 
+      color: var(--text); 
+      scroll-behavior: smooth;
+    }
+    
+    /* Green Galaxy Background */
+    .stars, .stars2, .stars3 {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: transparent url('https://i.ibb.co/FJj53KM/stars1.png') repeat;
+      z-index: -3;
+      animation: moveStars 200s linear infinite;
+      filter: hue-rotate(90deg) brightness(0.7);
+    }
+    .stars2 { 
+      background-image: url('https://i.ibb.co/7JqkgG6/stars2.png'); 
+      animation-duration: 300s; 
+      opacity: 0.5; 
+      z-index: -2;
+      filter: hue-rotate(90deg) brightness(0.8);
+    }
+    .stars3 { 
+      background-image: url('https://i.ibb.co/0yK4f5H/stars3.png'); 
+      animation-duration: 400s; 
+      opacity: 0.3; 
+      z-index: -1;
+      filter: hue-rotate(90deg) brightness(0.9);
+    }
+
+    @keyframes moveStars {
+      from { transform: translateY(0); }
+      to { transform: translateY(-5000px); }
+    }
+
+    /* Header Styles */
+    header { 
+      display: flex; 
+      justify-content: space-between; 
+      align-items: center; 
+      padding: 1rem 2rem; 
+      background: rgba(13, 33, 13, 0.7); 
+      backdrop-filter: blur(8px); 
+      position: sticky; 
+      top: 0; 
+      z-index: 100; 
+      border-bottom: 1px solid rgba(0, 168, 107, 0.2);
+    }
+    
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .logo img {
+      height: 40px;
+      width: auto;
+    }
+    
+    header h1 { 
+      font-size: 1.5rem; 
+      color: var(--primary); 
+      font-weight: 700;
+      background: linear-gradient(to right, #00a86b, #00ff88);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    
+    nav { 
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+    
+    nav a { 
+      color: var(--text); 
+      text-decoration: none; 
+      font-weight: 500;
+      transition: all 0.3s ease; 
+      position: relative;
+      padding: 0.5rem 0;
+    }
+    
+    nav a:hover { 
+      color: var(--primary); 
+    }
+    
+    nav a::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      width: 0;
+      height: 2px;
+      background: var(--primary);
+      transition: width 0.3s ease;
+    }
+    
+    nav a:hover::after {
+      width: 100%;
+      left: 0;
+    }
+    
+    .mobile-menu-btn {
+      display: none;
+      background: none;
+      border: none;
+      color: var(--text);
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+    
+    /* Main Content Styles */
+    main {
+      min-height: calc(100vh - 80px);
+      padding: 2rem;
+    }
+    
+    .hidden { 
+      display: none; 
+    }
+    
+    .form-box, .section, .profile-box, .features {
+      background: var(--card-bg); 
+      padding: 2rem; 
+      border-radius: 1rem; 
+      max-width: 500px; 
+      width: 100%;
+      margin: 2rem auto; 
+      box-shadow: 0 0 20px rgba(0, 168, 107, 0.3); 
+      text-align: center; 
+      animation: fadeIn 1s ease forwards;
+      border: 1px solid rgba(0, 168, 107, 0.2);
+    }
+    
+    .form-box h2, .section h2, .profile-box h2, .features h2 { 
+      margin-bottom: 1.5rem; 
+      color: var(--primary);
+      font-size: 1.8rem;
+      background: linear-gradient(to right, #00a86b, #00ff88);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    
+    .form-group {
+      margin-bottom: 1rem;
+      text-align: right;
+    }
+    
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      color: var(--text);
+      font-weight: 500;
+    }
+    
+    .form-box input, .form-box select, .form-box textarea { 
+      width: 100%; 
+      padding: 0.8rem 1rem; 
+      margin: 0.5rem 0; 
+      background: #2c3e2c; 
+      border: 1px solid #3c5c3c; 
+      border-radius: 0.5rem; 
+      color: var(--text); 
+      font-size: 1rem;
+      transition: all 0.3s ease;
+    }
+    
+    .form-box input:focus, .form-box select:focus, .form-box textarea:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 2px rgba(0, 168, 107, 0.3);
+    }
+    
+    .form-box button, .btn { 
+      width: 100%; 
+      padding: 0.8rem; 
+      background: var(--primary); 
+      color: #fff; 
+      border: none; 
+      border-radius: 0.5rem; 
+      cursor: pointer; 
+      margin-top: 1rem; 
+      font-weight: 700;
+      font-size: 1rem;
+      transition: all 0.3s ease; 
+    }
+    
+    .form-box button:hover, .btn:hover { 
+      background: var(--primary-dark); 
+      transform: translateY(-2px); 
+      box-shadow: 0 5px 15px rgba(0, 168, 107, 0.4);
+    }
+    
+    .btn-secondary {
+      background: transparent;
+      color: var(--primary);
+      border: 1px solid var(--primary);
+    }
+    
+    .btn-secondary:hover {
+      background: rgba(0, 168, 107, 0.1);
+    }
+    
+    .hero { 
+      text-align: center; 
+      padding: 4rem 2rem; 
+      color: var(--text); 
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    
+    .hero h2 { 
+      font-size: 2.5rem; 
+      margin-bottom: 1.5rem; 
+      animation: slideUp 1s ease forwards; 
+      line-height: 1.3;
+      background: linear-gradient(to right, #00a86b, #00ff88);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    
+    .hero p { 
+      font-size: 1.2rem; 
+      margin-bottom: 2rem; 
+      opacity: 0.9; 
+      line-height: 1.6;
+      color: var(--text-secondary);
+    }
+    
+    .hero-buttons {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    
+    .coming-soon { 
+      background: #1e3a1e; 
+      color: var(--text-secondary); 
+      padding: 1.5rem; 
+      border-radius: 1rem; 
+      display: inline-block; 
+      margin: 1rem 0;
+      animation: pulse 2s infinite; 
+      font-size: 1.1rem;
+      border: 1px solid rgba(0, 168, 107, 0.3);
+    }
+    
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+    
+    .feature-card {
+      background: var(--card-bg);
+      padding: 1.5rem;
+      border-radius: 0.8rem;
+      text-align: center;
+      transition: all 0.3s ease;
+      border: 1px solid rgba(0, 168, 107, 0.2);
+    }
+    
+    .feature-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0, 168, 107, 0.2);
+    }
+    
+    .feature-icon {
+      font-size: 2.5rem;
+      color: var(--primary);
+      margin-bottom: 1rem;
+    }
+    
+    .feature-card h3 {
+      color: var(--primary);
+      margin-bottom: 0.5rem;
+    }
+    
+    .feature-card p {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      line-height: 1.6;
+    }
+    
+    /* Profile Page Styles */
+    .profile-info {
+      text-align: right;
+      margin-bottom: 1.5rem;
+    }
+    
+    .profile-info p {
+      margin-bottom: 0.8rem;
+      font-size: 1.1rem;
+    }
+    
+    .profile-info strong {
+      color: var(--primary);
+      margin-left: 0.5rem;
+    }
+    
+    /* Stats Cards */
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: 1rem;
+      margin: 1.5rem 0;
+    }
+    
+    .stat-card {
+      background: rgba(0, 40, 0, 0.3);
+      padding: 1rem;
+      border-radius: 0.5rem;
+      text-align: center;
+      border: 1px solid rgba(0, 168, 107, 0.2);
+    }
+    
+    .stat-card h3 {
+      color: var(--primary);
+      font-size: 1.8rem;
+      margin-bottom: 0.3rem;
+    }
+    
+    .stat-card p {
+      color: var(--text-secondary);
+      font-size: 0.8rem;
+    }
+    
+    /* Footer Styles */
+    footer {
+      background: rgba(13, 33, 13, 0.7);
+      padding: 2rem;
+      text-align: center;
+      border-top: 1px solid rgba(0, 168, 107, 0.2);
+      backdrop-filter: blur(8px);
+    }
+    
+    .social-links {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      margin: 1.5rem 0;
+    }
+    
+    .social-links a {
+      color: var(--text);
+      font-size: 1.5rem;
+      transition: all 0.3s ease;
+    }
+    
+    .social-links a:hover {
+      color: var(--primary);
+      transform: translateY(-3px);
+    }
+    
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      margin: 1rem 0;
+    }
+    
+    .footer-links a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+    
+    .footer-links a:hover {
+      color: var(--primary);
+    }
+    
+    .copyright {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      margin-top: 1.5rem;
+    }
+    
+    /* Error/Success Messages */
+    .alert {
+      padding: 0.8rem 1rem;
+      border-radius: 0.5rem;
+      margin-bottom: 1rem;
+      font-weight: 500;
+    }
+    
+    .alert-error {
+      background: rgba(255, 68, 68, 0.2);
+      color: var(--error);
+      border: 1px solid var(--error);
+    }
+    
+    .alert-success {
+      background: rgba(0, 200, 81, 0.2);
+      color: var(--success);
+      border: 1px solid var(--success);
+    }
+    
+    /* Animations */
+    @keyframes fadeIn { 
+      from { opacity: 0; transform: translateY(20px); } 
+      to { opacity: 1; transform: translateY(0); } 
+    }
+    
+    @keyframes slideUp { 
+      from { transform: translateY(50px); opacity: 0; } 
+      to { transform: translateY(0); opacity: 1; } 
+    }
+    
+    @keyframes pulse { 
+      0%, 100% { transform: scale(1); } 
+      50% { transform: scale(1.05); } 
+    }
+    
+    /* Responsive Styles */
+    @media (max-width: 768px) {
+      header {
+        flex-direction: column;
+        padding: 1rem;
+        gap: 1rem;
+      }
+      
+      nav {
+        width: 100%;
+        justify-content: space-between;
+      }
+      
+      .mobile-menu-btn {
+        display: block;
+      }
+      
+      .hero h2 {
+        font-size: 2rem;
+      }
+      
+      .hero p {
+        font-size: 1rem;
+      }
+      
+      .form-box, .section, .profile-box {
+        padding: 1.5rem;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      nav {
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+      
+      .hero {
+        padding: 2rem 1rem;
+      }
+      
+      .hero h2 {
+        font-size: 1.8rem;
+      }
+      
+      .hero-buttons {
+        flex-direction: column;
+      }
+      
+      .hero-buttons .btn {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Green Galaxy Background Layers -->
+  <div class="stars"></div>
+  <div class="stars2"></div>
+  <div class="stars3"></div>
+
+  <header>
+    <div class="logo">
+      <h1>SmartClient</h1>
+    </div>
+    <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
+      <i class="fas fa-bars"></i>
+    </button>
+    <nav id="mainNav">
+      <a onclick="showPage('home')"><i class="fas fa-home"></i> خانه</a>
+      <a onclick="showPage('features')"><i class="fas fa-star"></i> ویژگی‌ها</a>
+      <a onclick="showPage('download')"><i class="fas fa-download"></i> دانلود</a>
+      <a onclick="showPage('shop')"><i class="fas fa-store"></i> فروشگاه</a>
+      <a onclick="showPage('login')" id="loginBtn"><i class="fas fa-sign-in-alt"></i> ورود</a>
+      <a onclick="showPage('profile')" id="profileBtn" class="hidden"><i class="fas fa-user"></i> پروفایل</a>
+    </nav>
+  </header>
+
+  <main>
+    <!-- Home Page -->
+    <section id="home" class="hero">
+      <h2 class="animate__animated animate__fadeInDown">بهترین کلاینت ماینکرافت 1.8.9</h2>
+      <p class="animate__animated animate__fadeIn animate__delay-1s">ارتقاء تجربه بازی خود با کلاینتی قدرتمند، سبک و پر از ویژگی‌های حرفه‌ای برای PvP و FPS بالا</p>
+      <div class="hero-buttons animate__animated animate__fadeInUp animate__delay-1s">
+        <a class="btn" onclick="showPage('download')"><i class="fas fa-download"></i> دانلود رایگان</a>
+        <a class="btn btn-secondary" onclick="showPage('features')"><i class="fas fa-info-circle"></i> ویژگی‌ها</a>
+      </div>
+    </section>
+
+    <!-- Features Page -->
+    <section id="features" class="hidden">
+      <div class="features">
+        <h2>ویژگی‌های منحصر به فرد</h2>
+        <p>کلاینت SmartClient با آخرین تکنولوژی‌ها برای بهترین تجربه بازی طراحی شده است</p>
+        
+        <div class="features-grid">
+          <div class="feature-card">
+            <div class="feature-icon">
+              <i class="fas fa-tachometer-alt"></i>
+            </div>
+            <h3>بهینه‌سازی فوق‌العاده</h3>
+            <p>افزایش FPS تا 300% با استفاده از الگوریتم‌های پیشرفته بهینه‌سازی</p>
+          </div>
+          
+          <div class="feature-card">
+            <div class="feature-icon">
+              <i class="fas fa-gamepad"></i>
+            </div>
+            <h3>PvP حرفه‌ای</h3>
+            <p>ابزارهای پیشرفته برای PvP شامل HitBox گسترده، AutoClicker و CPS Counter</p>
+          </div>
+          
+          <div class="feature-card">
+            <div class="feature-icon">
+              <i class="fas fa-paint-brush"></i>
+            </div>
+            <h3>ظاهر شخصی‌سازی شده</h3>
+            <p>صدها تم و قابلیت شخصی‌سازی رابط کاربری مطابق سلیقه شما</p>
+          </div>
+          
+          <div class="feature-card">
+            <div class="feature-icon">
+              <i class="fas fa-shield-alt"></i>
+            </div>
+            <h3>امنیت بالا</h3>
+            <p>حفاظت پیشرفته در برابر چیت و هکرها با سیستم AntiCheat داخلی</p>
+          </div>
+          
+          <div class="feature-card">
+            <div class="feature-icon">
+              <i class="fas fa-plug"></i>
+            </div>
+            <h3>پشتیبانی از افزونه</h3>
+            <p>نصب آسان ماژول‌ها و افزونه‌های شخص ثالث برای ویژگی‌های بیشتر</p>
+          </div>
+          
+          <div class="feature-card">
+            <div class="feature-icon">
+              <i class="fas fa-users"></i>
+            </div>
+            <h3>جامعه فعال</h3>
+            <p>پشتیبانی 24/7 و جامعه‌ای از بازیکنان حرفه‌ای برای کمک و راهنمایی</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Download Page -->
+    <section id="download" class="section hidden">
+      <h2>دانلود SmartClient</h2>
+      <p>نسخه فعلی: 2.5.1 (آخرین آپدیت: 1402/05/15)</p>
+      
+      <div class="download-options">
+        <div class="form-group">
+          <label for="version-select">انتخاب نسخه:</label>
+          <select id="version-select" class="form-control">
+            <option value="1.8.9">1.8.9 (توصیه شده)</option>
+            <option value="1.12.2">1.12.2</option>
+            <option value="1.7.10">1.7.10</option>
+          </select>
+        </div>
+        
+        <div class="form-group">
+          <label for="os-select">سیستم عامل:</label>
+          <select id="os-select" class="form-control">
+            <option value="windows">Windows</option>
+            <option value="mac">Mac OS</option>
+            <option value="linux">Linux</option>
+          </select>
+        </div>
+        
+        <button class="btn" onclick="startDownload()">
+          <i class="fas fa-download"></i> دانلود (45.7 MB)
+        </button>
+        
+        <p style="margin-top: 1rem; color: var(--text-secondary); font-size: 0.9rem;">
+          <i class="fas fa-info-circle"></i> نیازمند جاوا 8 یا بالاتر
+        </p>
+      </div>
+    </section>
+
+    <!-- Login Page -->
+    <section id="login" class="form-box hidden">
+      <h2>ورود به حساب کاربری</h2>
+      <div id="loginError" class="alert alert-error hidden"></div>
+      
+      <div class="form-group">
+        <label for="loginUsername">نام کاربری یا ایمیل</label>
+        <input type="text" id="loginUsername" placeholder="username@gmail.com">
+      </div>
+      
+      <div class="form-group">
+        <label for="loginPassword">رمز عبور</label>
+        <input type="password" id="loginPassword" placeholder="••••••••">
+      </div>
+      
+      <div style="text-align: left; margin: 1rem 0;">
+        <input type="checkbox" id="rememberMe">
+        <label for="rememberMe" style="display: inline; margin-right: 0.5rem;">مرا به خاطر بسپار</label>
+      </div>
+      
+      <button onclick="loginUser()"><i class="fas fa-sign-in-alt"></i> ورود</button>
+      
+      <p style="margin-top: 1rem; color: var(--text-secondary);">
+        حساب کاربری ندارید؟ <a href="#" onclick="showPage('register')" style="color: var(--primary);">ثبت‌نام کنید</a>
+      </p>
+      
+      <p style="margin-top: 0.5rem;">
+        <a href="#" onclick="showPage('forgot')" style="color: var(--text-secondary); font-size: 0.9rem;">رمز عبور را فراموش کرده‌اید؟</a>
+      </p>
+    </section>
+
+    <!-- Register Page -->
+    <section id="register" class="form-box hidden">
+      <h2>ایجاد حساب کاربری</h2>
+      <div id="registerError" class="alert alert-error hidden"></div>
+      
+      <div class="form-group">
+        <label for="registerUsername">نام کاربری</label>
+        <input type="text" id="registerUsername" placeholder="حداقل 4 کاراکتر">
+      </div>
+      
+      <div class="form-group">
+        <label for="registerEmail">آدرس ایمیل</label>
+        <input type="email" id="registerEmail" placeholder="example@gmail.com">
+      </div>
+      
+      <div class="form-group">
+        <label for="registerPassword">رمز عبور</label>
+        <input type="password" id="registerPassword" placeholder="حداقل 8 کاراکتر">
+      </div>
+      
+      <div class="form-group">
+        <label for="registerConfirm">تکرار رمز عبور</label>
+        <input type="password" id="registerConfirm" placeholder="••••••••">
+      </div>
+      
+      <button onclick="registerUser()"><i class="fas fa-user-plus"></i> ثبت‌نام</button>
+      
+      <p style="margin-top: 1rem; color: var(--text-secondary);">
+        قبلا ثبت‌نام کرده‌اید؟ <a href="#" onclick="showPage('login')" style="color: var(--primary);">وارد شوید</a>
+      </p>
+    </section>
+
+    <!-- Forgot Password Page -->
+    <section id="forgot" class="form-box hidden">
+      <h2>بازیابی رمز عبور</h2>
+      <div id="forgotError" class="alert alert-error hidden"></div>
+      <div id="forgotSuccess" class="alert alert-success hidden"></div>
+      
+      <div class="form-group">
+        <label for="forgotEmail">آدرس ایمیل</label>
+        <input type="email" id="forgotEmail" placeholder="example@gmail.com">
+      </div>
+      
+      <button onclick="resetPassword()"><i class="fas fa-key"></i> ارسال لینک بازیابی</button>
+      
+      <p style="margin-top: 1rem; color: var(--text-secondary);">
+        <a href="#" onclick="showPage('login')" style="color: var(--primary);">بازگشت به صفحه ورود</a>
+      </p>
+    </section>
+
+    <!-- Shop Page -->
+    <section id="shop" class="section hidden">
+      <h2>فروشگاه SmartClient</h2>
+      <p>ارتقاء حساب کاربری خود با خرید Rank و آیتم‌های ویژه</p>
+      
+      <div class="coming-soon">
+        <i class="fas fa-cog fa-spin"></i> فروشگاه به زودی راه‌اندازی می‌شود
+      </div>
+    </section>
+
+    <!-- Profile Page -->
+    <section id="profile" class="profile-box hidden">
+      <h2>پروفایل کاربری</h2>
+      
+      <div class="profile-info">
+        <p><strong>نام کاربری:</strong> <span id="profileName">کاربر ناشناس</span></p>
+        <p><strong>ایمیل:</strong> <span id="profileEmail">نامشخص</span></p>
+        <p><strong>رتبه:</strong> <span id="profileRank" style="color: var(--primary);">عضو عادی</span></p>
+        <p><strong>تاریخ عضویت:</strong> <span id="profileJoinDate">1402/05/10</span></p>
+      </div>
+      
+      <div class="stats">
+        <div class="stat-card">
+          <h3>128</h3>
+          <p>ساعت بازی</p>
+        </div>
+        <div class="stat-card">
+          <h3>24</h3>
+          <p>برد در PvP</p>
+        </div>
+        <div class="stat-card">
+          <h3>5</h3>
+          <p>دوست</p>
+        </div>
+      </div>
+      
+      <button class="btn btn-secondary" onclick="logoutUser()">
+        <i class="fas fa-sign-out-alt"></i> خروج
+      </button>
+    </section>
+  </main>
+
+  <footer>
+    <div class="social-links">
+      <a href="#" target="_blank"><i class="fab fa-telegram"></i></a>
+      <a href="#" target="_blank"><i class="fab fa-discord"></i></a>
+      <a href="#" target="_blank"><i class="fab fa-youtube"></i></a>
+      <a href="#" target="_blank"><i class="fab fa-instagram"></i></a>
+    </div>
+    
+    <div class="footer-links">
+      <a href="#" onclick="showPage('home')">خانه</a>
+      <a href="#" onclick="showPage('features')">ویژگی‌ها</a>
+      <a href="#" onclick="showPage('download')">دانلود</a>
+      <a href="#" onclick="showPage('shop')">فروشگاه</a>
+      <a href="#">قوانین</a>
+      <a href="#">حریم خصوصی</a>
+      <a href="#">تماس با ما</a>
+    </div>
+    
+    <p class="copyright">
+      کلیه حقوق برای SmartClient محفوظ است © 1402
+    </p>
+  </footer>
+
+  <script>
+    // Global Variables
+    let currentUser = null;
+    const users = JSON.parse(localStorage.getItem('sc_users')) || [];
+    
+    // DOM Ready
+    document.addEventListener('DOMContentLoaded', function() {
+      // Check if user is logged in from localStorage
+      const loggedInUser = localStorage.getItem('sc_loggedInUser');
+      if (loggedInUser) {
+        currentUser = JSON.parse(loggedInUser);
+        updateLoginState(true);
+      }
+      
+      // Show home page by default
+      showPage('home');
+    });
+    
+    // Page Navigation
+    function showPage(page) {
+      // Hide all pages
+      document.querySelectorAll('main > section').forEach(sec => {
+        sec.classList.add('hidden');
+      });
+      
+      // Show selected page
+      document.getElementById(page).classList.remove('hidden');
+      
+      // Special handling for certain pages
+      if (page === 'profile' && currentUser) {
+        updateProfilePage();
+      }
+      
+      // Scroll to top
+      window.scrollTo(0, 0);
+    }
+    
+    // Toggle Mobile Menu
+    function toggleMobileMenu() {
+      const nav = document.getElementById('mainNav');
+      nav.classList.toggle('hidden');
+    }
+    
+    // Login Function
+    function loginUser() {
+      const username = document.getElementById('loginUsername').value.trim();
+      const password = document.getElementById('loginPassword').value.trim();
+      const errorElement = document.getElementById('loginError');
+      
+      // Reset error
+      errorElement.classList.add('hidden');
+      
+      // Validation
+      if (!username || !password) {
+        showError(errorElement, 'لطفا نام کاربری و رمز عبور را وارد کنید');
+        return;
+      }
+      
+      // Find user
+      const user = users.find(u => 
+        (u.username === username || u.email === username) && 
+        u.password === password
+      );
+      
+      if (user) {
+        // Login successful
+        currentUser = user;
+        localStorage.setItem('sc_loggedInUser', JSON.stringify(user));
+        updateLoginState(true);
+        
+        // Show success message
+        showPage('profile');
+      } else {
+        showError(errorElement, 'نام کاربری یا رمز عبور اشتباه است');
+      }
+    }
+    
+    // Register Function
+    function registerUser() {
+      const username = document.getElementById('registerUsername').value.trim();
+      const email = document.getElementById('registerEmail').value.trim();
+      const password = document.getElementById('registerPassword').value.trim();
+      const confirm = document.getElementById('registerConfirm').value.trim();
+      const errorElement = document.getElementById('registerError');
+      
+      // Reset error
+      errorElement.classList.add('hidden');
+      
+      // Validation
+      if (!username || !email || !password || !confirm) {
+        showError(errorElement, 'لطفا تمام فیلدها را پر کنید');
+        return;
+      }
+      
+      if (username.length < 4) {
+        showError(errorElement, 'نام کاربری باید حداقل 4 کاراکتر باشد');
+        return;
+      }
+      
+      if (!isValidEmail(email)) {
+        showError(errorElement, 'لطفا یک ایمیل معتبر وارد کنید');
+        return;
+      }
+      
+      if (password.length < 8) {
+        showError(errorElement, 'رمز عبور باید حداقل 8 کاراکتر باشد');
+        return;
+      }
+      
+      if (password !== confirm) {
+        showError(errorElement, 'رمز عبور و تکرار آن مطابقت ندارند');
+        return;
+      }
+      
+      // Check if username or email already exists
+      if (users.some(u => u.username === username)) {
+        showError(errorElement, 'این نام کاربری قبلا ثبت شده است');
+        return;
+      }
+      
+      if (users.some(u => u.email === email)) {
+        showError(errorElement, 'این ایمیل قبلا ثبت شده است');
+        return;
+      }
+      
+      // Create new user
+      const newUser = {
+        id: Date.now(),
+        username,
+        email,
+        password,
+        joinDate: new Date().toLocaleDateString('fa-IR'),
+        rank: 'عضو عادی'
+      };
+      
+      // Save user
+      users.push(newUser);
+      localStorage.setItem('sc_users', JSON.stringify(users));
+      
+      // Auto login
+      currentUser = newUser;
+      localStorage.setItem('sc_loggedInUser', JSON.stringify(newUser));
+      updateLoginState(true);
+      
+      // Show profile page
+      showPage('profile');
+    }
+    
+    // Forgot Password
+    function resetPassword() {
+      const email = document.getElementById('forgotEmail').value.trim();
+      const errorElement = document.getElementById('forgotError');
+      const successElement = document.getElementById('forgotSuccess');
+      
+      // Reset messages
+      errorElement.classList.add('hidden');
+      successElement.classList.add('hidden');
+      
+      // Validation
+      if (!email) {
+        showError(errorElement, 'لطفا ایمیل خود را وارد کنید');
+        return;
+      }
+      
+      if (!isValidEmail(email)) {
+        showError(errorElement, 'لطفا یک ایمیل معتبر وارد کنید');
+        return;
+      }
+      
+      // Check if email exists
+      const userExists = users.some(u => u.email === email);
+      if (!userExists) {
+        showError(errorElement, 'این ایمیل ثبت نشده است');
+        return;
+      }
+      
+      // Show success (in a real app, we would send an email)
+      successElement.textContent = `لینک بازیابی رمز عبور به ${email} ارسال شد`;
+      successElement.classList.remove('hidden');
+    }
+    
+    // Logout Function
+    function logoutUser() {
+      currentUser = null;
+      localStorage.removeItem('sc_loggedInUser');
+      updateLoginState(false);
+      showPage('home');
+    }
+    
+    // Update Profile Page
+    function updateProfilePage() {
+      if (!currentUser) return;
+      
+      document.getElementById('profileName').textContent = currentUser.username;
+      document.getElementById('profileEmail').textContent = currentUser.email;
+      document.getElementById('profileRank').textContent = currentUser.rank;
+      document.getElementById('profileJoinDate').textContent = currentUser.joinDate;
+    }
+    
+    // Update Login State (show/hide login/profile buttons)
+    function updateLoginState(isLoggedIn) {
+      if (isLoggedIn) {
+        document.getElementById('loginBtn').classList.add('hidden');
+        document.getElementById('profileBtn').classList.remove('hidden');
+      } else {
+        document.getElementById('loginBtn').classList.remove('hidden');
+        document.getElementById('profileBtn').classList.add('hidden');
+      }
+    }
+    
+    // Download Function
+    function startDownload() {
+      const version = document.getElementById('version-select').value;
+      const os = document.getElementById('os-select').value;
+      
+      // In a real app, this would initiate the download
+      alert(`در حال دانلود SmartClient برای ${version} (${os})...\n\nاین یک دمو است و در نسخه واقعی فایل دانلود می‌شود.`);
+    }
+    
+    // Helper Functions
+    function showError(element, message) {
+      element.textContent = message;
+      element.classList.remove('hidden');
+    }
+    
+    function isValidEmail(email) {
+      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    }
+  </script>
+</body>
+</html>
